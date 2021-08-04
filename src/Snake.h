@@ -6,9 +6,8 @@
 #include <Input/InputI2C.h>
 #include <Loop/LoopManager.h>
 #include <ArduinoJson.h>
-#include <spiffs_api.h>
-#include <gpio.h>
-#include <avr/pgmspace.h>
+
+
 #include <Support/Context.h>
 #include "../Nibble.hpp"
 #include <UI/Image.h>
