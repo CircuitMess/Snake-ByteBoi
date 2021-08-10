@@ -3,15 +3,15 @@
 #include "Highscore.h"
 
 Snake::Snake *Snake::Snake::instance = nullptr;
-Snake::Snake::Snake(Display &display) : Context(display), baseSprite(display.getBaseSprite()),
-										buttons(Input::getInstance()), display(&display)
+Snake::Snake::Snake(Display &display) : Context(display), baseSprite(screen.getSprite()),
+										buttons(Input::getInstance())
 {
-	Serial.println(baseSprite->created() ? "created" : "not created");
 	instance = this;
 	gamestatus = "title";
 	deadTime = 0;
 	memset(snakeX, 0, sizeof(snakeX));
 	memset(snakeY, 0, sizeof(snakeY));
+	snakeLength = 0;
 	
 }
 void Snake::Snake::start()
@@ -37,15 +37,15 @@ void Snake::Snake::draw()
 		titleScreen();
 		drawSnake();
 	}
-	if (gamestatus == "newgame")
+	else if (gamestatus == "newgame")
 	{
 		oldgame();
 	}
-	if (gamestatus == "oldgame")
+	else if (gamestatus == "oldgame")
 	{
 		oldgame();
 	}
-	if(gamestatus == "dead")
+	else if(gamestatus == "dead")
 	{
 		if(deadTime <= 500000)
 		{
@@ -56,59 +56,54 @@ void Snake::Snake::draw()
 			drawDead();
 		}
 	}
-	if (gamestatus == "paused")
+	else if (gamestatus == "paused")
 	{
 		paused();
 	}
-	if(gamestatus == "eraseData")
+	else if(gamestatus == "eraseData")
 	{
 		eraseDataDraw();
 	}
-	if(gamestatus == "dataDisplay")
+	else if(gamestatus == "dataDisplay")
 	{
 		dataDisplay();
 	}
-	if(gamestatus == "enterInitials")
+	else if(gamestatus == "enterInitials")
 	{
 		enterInitialsDraw();
 	}
 }
 void Snake::Snake::titleScreen()
 {
+	baseSprite->setTextDatum(textdatum_t::top_center);
+
 	baseSprite->clear(TFT_BLACK);
 	baseSprite->setTextColor(TFT_GREEN);
-	baseSprite->setCursor(25, 8);
-	baseSprite->setTextFont(1);
+	baseSprite->setFont(&fonts::Font0);
 	baseSprite->setTextSize(2);
-	baseSprite->printCenter("SNAKE");
+	baseSprite->drawString("SNAKE", baseSprite->width()/2, 8);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	if (menuSignal == 0 && borderFlag == 1)
 		baseSprite->setTextColor(TFT_YELLOW);
-	baseSprite->setCursor(9, 32);
+	baseSprite->setCursor(25, 30);
 	baseSprite->setTextSize(2);
 	baseSprite->print("WALL ");
-	baseSprite->setCursor(60, 32);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	if (menuSignal == 0 && borderFlag == 0)
 		baseSprite->setTextColor(TFT_YELLOW);
 	baseSprite->print(" FREE");
-	baseSprite->setCursor(60, 55);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	if (menuSignal == 1)
 		baseSprite->setTextColor(TFT_YELLOW);
-	baseSprite->printCenter("SPEED: ");
-	baseSprite->setCursor(90, 55);
-	baseSprite->print(instance->speed);
+	baseSprite->drawString(String(String("SPEED: ") + String(instance->speed)), baseSprite->width()/2, 52);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	if (menuSignal == 2)
 		baseSprite->setTextColor(TFT_YELLOW);
-	baseSprite->setCursor(25, 78);
-	baseSprite->printCenter("SCORES");
+	baseSprite->drawString("SCORES", baseSprite->width()/2, 73);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	if (menuSignal == 3)
 		baseSprite->setTextColor(TFT_YELLOW);
-	baseSprite->setCursor(25, 101);
-	baseSprite->printCenter("EXIT");
+	baseSprite->drawString("EXIT", baseSprite->width()/2, 95);
 	/*if (speedB)
 		speed = 1;
 	else
@@ -177,9 +172,11 @@ void Snake::Snake::titleSetup()
 		{
 		case 0:
 			instance->gamestatus = "newgame";
+			instance->screenChange = true;
 			break;
 		case 1:
 			instance->gamestatus = "newgame";
+			instance->screenChange = true;
 			break;
 		case 2:
 			instance->gamestatus = "dataDisplay";
@@ -193,7 +190,7 @@ void Snake::Snake::titleSetup()
 }
 void Snake::Snake::drawHead()
 {
-	if (dirX == 1)
+	if (dirX > 0)
 	{
 		baseSprite->drawRect(snakeX[0] + 3, snakeY[0] + 1, 2, 3, TFT_RED);
 		baseSprite->drawPixel(snakeX[0], snakeY[0] + 1, EYE_COLOR);
@@ -201,7 +198,7 @@ void Snake::Snake::drawHead()
 		baseSprite->drawPixel(snakeX[0], snakeY[0] + 3, TFT_BLACK);
 		baseSprite->drawPixel(snakeX[0] + 1, snakeY[0] + 3, TFT_BLACK);
 	}
-	else if (instance->dirX == -1)
+	else if (instance->dirX < 0)
 	{
 		baseSprite->fillRect(snakeX[0], snakeY[0] + 1, 2, 3, TFT_RED);
 		baseSprite->drawPixel(snakeX[0] + 3, snakeY[0] + 1, TFT_BLACK);
@@ -209,7 +206,7 @@ void Snake::Snake::drawHead()
 		baseSprite->drawPixel(snakeX[0] + 4, snakeY[0] + 1, TFT_BLACK);
 		baseSprite->drawPixel(snakeX[0] + 4, snakeY[0] + 3, TFT_BLACK);
 	}
-	else if (instance->dirY == 1)
+	else if (instance->dirY > 0)
 	{
 		baseSprite->fillRect(snakeX[0] + 1, snakeY[0] + 3, 3, 2, TFT_RED);
 		baseSprite->drawPixel(snakeX[0] + 1, snakeY[0], TFT_BLACK);
@@ -217,7 +214,7 @@ void Snake::Snake::drawHead()
 		baseSprite->drawPixel(snakeX[0] + 1, snakeY[0] + 1, TFT_BLACK);
 		baseSprite->drawPixel(snakeX[0] + 3, snakeY[0] + 1, TFT_BLACK);
 	}
-	else if (instance->dirY == -1)
+	else if (instance->dirY < 0)
 	{
 		baseSprite->fillRect(snakeX[0] + 1, snakeY[0], 3, 2, TFT_RED);
 		baseSprite->drawPixel(snakeX[0] + 1, snakeY[0] + 3, TFT_BLACK);
@@ -308,7 +305,7 @@ void Snake::Snake::loop(uint _time)
 		enterInitialsUpdate();
 	}
 	draw();
-	display->commit();
+	screen.commit();
 }
 void Snake::Snake::control()
 {
@@ -356,25 +353,25 @@ void Snake::Snake::snakeMenu()
 }
 void Snake::Snake::snakeMenuControl()
 {
-	if (snakeX[0] < 121 && snakeY[0] <= 1)
+	if (snakeX[0] < baseSprite->width() - 7 && snakeY[0] <= 1)
 	{
-		dirX = 1;
+		dirX = 1 * speed;
 		dirY = 0;
 	}
-	else if (snakeX[0] >= 121 && snakeY[0] < 121)
+	else if (snakeX[0] >= baseSprite->width() - 7 && snakeY[0] < baseSprite->height() - 7)
 	{
 		dirX = 0;
-		dirY = 1;
+		dirY = 1 * speed;
 	}
-	else if (snakeX[0] > 3 && snakeY[0] >= 121)
+	else if (snakeX[0] > 3 && snakeY[0] >= baseSprite->height() - 7)
 	{
-		dirX = -1;
+		dirX = -1 * speed;
 		dirY = 0;
 	}
 	else if (snakeX[0] <= 1 && snakeY[0] > 3)
 	{
 		dirX = 0;
-		dirY = -1;
+		dirY = -1 * speed;
 	}
 }
 void Snake::Snake::newGameSetup()
@@ -383,16 +380,16 @@ void Snake::Snake::newGameSetup()
 	setButtonCallbacksGame();
 	for (int i = 400; i > 0; i--)
 	{
-		snakeX[i] = 128;
-		snakeY[i] = 128;
+		snakeX[i] = baseSprite->width();
+		snakeY[i] = baseSprite->height();
 		baseSprite->fillRect(snakeX[i], snakeY[i], tileSize, tileSize, TFT_BLACK);
 	}
 	snakeX[0] = 10;
 	snakeY[0] = 63;
-	foodX = random(3, 122);
-	foodY = random(3, 122);
+	foodX = random(3, baseSprite->width() - 6);
+	foodY = random(3, baseSprite->height() - 6);
 
-	dirX = 1 * 1;
+	dirX = 1 * speed;
 	dirY = 0;
 	snakeLength = 12;
 	hScore = 0;
@@ -402,8 +399,8 @@ void Snake::Snake::drawFood()
 {
 	while (!foodCoolFlag)
 	{
-		foodX = random(3, 122);
-		foodY = random(3, 122);
+		foodX = random(3, baseSprite->width() - 6);
+		foodY = random(3, baseSprite->height() - 6);
 		for (uint8_t chX = 0; chX < 4; chX++)
 		{
 			for (uint8_t chY = 0; chY < 4; chY++)
@@ -427,6 +424,7 @@ void Snake::Snake::drawFood()
 }
 void Snake::Snake::drawSnake()
 {
+	if(snakeLength == 0) return;
 	for (int i = (snakeLength)-1; i >= 0; i--)
 	{
 		baseSprite->fillRect(snakeX[i], snakeY[i], tileSize, tileSize, TFT_BLACK);
@@ -457,27 +455,27 @@ void Snake::Snake::setButtonCallbacksGame()
 		if (instance->dirY == 0)
 		{
 			instance->dirX = 0;
-			instance->dirY = -1;
+			instance->dirY = -1 * instance->speed;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_DOWN, []() {
 		if (instance->dirY == 0)
 		{
 			instance->dirX = 0;
-			instance->dirY = 1;
+			instance->dirY = 1 * instance->speed;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_RIGHT, []() {
 		if (instance->dirX == 0)
 		{
-			instance->dirX = 1;
+			instance->dirX = 1 * instance->speed;
 			instance->dirY = 0;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_LEFT, []() {
 		if (instance->dirX == 0)
 		{
-			instance->dirX = -1;
+			instance->dirX = -1 * instance->speed;
 			instance->dirY = 0;
 		}
 	});
@@ -512,8 +510,14 @@ void Snake::Snake::crash()
 {
 	if (borderFlag)
 	{
-		if ((snakeX[0] <= 1 || snakeY[0] <= 1 || snakeX[0] >= 124 || snakeY[0] >= 124)){
+		if ((snakeX[0] <= 1 || snakeY[0] <= 1 || snakeX[0] >= baseSprite->width() - 4 || snakeY[0] >= baseSprite->height() - 4)){
 			gamestatus = "dead";
+			buttons->removeBtnPressCallback(BTN_A);
+			buttons->removeBtnPressCallback(BTN_B);
+			buttons->removeBtnPressCallback(BTN_UP);
+			buttons->removeBtnPressCallback(BTN_DOWN);
+			buttons->removeBtnPressCallback(BTN_LEFT);
+			buttons->removeBtnPressCallback(BTN_RIGHT);
 			Piezo.tone(50, 300);
 		}
 	}
@@ -522,17 +526,17 @@ void Snake::Snake::crash()
 		for (int i = 0; i < snakeLength; i++)
 		{
 			if (snakeX[i] <= 0 && snakeX[i] > -8)
-				snakeX[i] = 127;
+				snakeX[i] = baseSprite->width() - 1;
 			else if (snakeX[i] < -5)
-				snakeX[i] = 127;
+				snakeX[i] = baseSprite->width() - 1;
 			else
-				snakeX[i] = snakeX[i] % 128;
+				snakeX[i] = snakeX[i] % baseSprite->width();
 			if (snakeY[i] <= 0 && snakeY[i] > -8)
-				snakeY[i] = 127;
+				snakeY[i] = baseSprite->height() - 1;
 			else if (snakeY[i] < -5)
-				snakeY[i] = 127;
+				snakeY[i] = baseSprite->height() - 1;
 			else
-				snakeY[i] = snakeY[i] % 128;
+				snakeY[i] = snakeY[i] % baseSprite->height();
 		}
 	}
 	// itself
@@ -549,39 +553,33 @@ void Snake::Snake::drawDead()
 {
 	baseSprite->clear(TFT_BLACK);
 	baseSprite->setTextSize(2);
-	baseSprite->setTextFont(1);
-	baseSprite->setCursor(5, 5);
+	baseSprite->setFont(&fonts::Font0);
 	baseSprite->setTextColor(TFT_RED);
-	baseSprite->printCenter("GAME OVER");
-	baseSprite->setTextFont(2);
-	baseSprite->setCursor(5, 55);
+	baseSprite->setTextDatum(textdatum_t::top_center);
+	baseSprite->drawString("GAME OVER", baseSprite->width()/2, 5);
+	baseSprite->setFont(&fonts::Font2);
 	baseSprite->setTextColor(TFT_YELLOW);
 	baseSprite->setTextSize(1);
-	baseSprite->printCenter("Your score:");
-	baseSprite->println();
+	baseSprite->drawString("Your score:", baseSprite->width()/2, 48);
 	baseSprite->setTextSize(2);
-	baseSprite->printCenter(hScore);
+	baseSprite->drawString(String(hScore), baseSprite->width()/2, 62);
+
 }
 void Snake::Snake::dead()
 {
 	if(deadTime > 2500000)
 	{
+		screenChange = true;
 		gamestatus = "enterInitials";
 	}
 }
 void Snake::Snake::oldgame()
 {
-	if (speed > 1 || skip == 0)
-	{
 		baseSprite->clear(TFT_BLACK);
 		if (borderFlag){
-			baseSprite->drawRect(0, 0, 128, 128, TFT_WHITE);
+			baseSprite->drawRect(0, 0, baseSprite->width(), baseSprite->height(), TFT_WHITE);
 		}
-		baseSprite->setCursor(6, 110, 2);
-		baseSprite->setTextSize(1);
-		baseSprite->setTextColor(TFT_LIGHTGREY);
-		baseSprite->print("SCORE:");
-		baseSprite->print(hScore);
+
 		if (eaten){
 			baseSprite->fillRect(foodX, foodY, foodSize, foodSize, TFT_BLACK);
 		}
@@ -590,11 +588,12 @@ void Snake::Snake::oldgame()
 			drawFood();
 		}
 		baseSprite->fillRect(foodX, foodY, foodSize, foodSize, TFT_YELLOW);
-		skip = 1;
-	}
-	else{
-		skip = 0;
-	}
+		baseSprite->setCursor(6, baseSprite->height() - 15);
+		baseSprite->setTextSize(1);
+		baseSprite->setTextFont(1);
+		baseSprite->setTextColor(TFT_LIGHTGREY);
+		baseSprite->print("SCORE:");
+		baseSprite->print(hScore);
 }
 void Snake::Snake::pausedSetup()
 {
@@ -616,23 +615,20 @@ void Snake::Snake::paused()
 	drawSnake();
 	baseSprite->fillRect(foodX, foodY, foodSize, foodSize, TFT_YELLOW);
 	if (borderFlag)
-		baseSprite->drawRect(0, 0, 128, 128, TFT_WHITE);
-	baseSprite->setTextFont(2);
-	baseSprite->setCursor(6, 110);
+		baseSprite->drawRect(0, 0, baseSprite->width(), baseSprite->height(), TFT_WHITE);
+	baseSprite->setFont(&fonts::Font2);
+	baseSprite->setCursor(6, baseSprite->width() - 18);
 	baseSprite->setTextSize(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	baseSprite->print("SCORE:");
 	baseSprite->print(hScore);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->setCursor(35, 35);
 	baseSprite->setTextSize(2);
-	baseSprite->printCenter("PAUSED");
-	baseSprite->setCursor(34, 65);
+	baseSprite->drawString("PAUSED", baseSprite->width()/2, 35);
 	baseSprite->setTextSize(1);
-	baseSprite->printCenter("Press A to play");
-	baseSprite->setTextFont(2);
-	baseSprite->setCursor(35, 80);
-	baseSprite->printCenter("Press B to exit");
+	baseSprite->drawString("Press A to play", baseSprite->width()/2, 65);
+	baseSprite->setFont(&fonts::Font2);
+	baseSprite->drawString("Press B to exit", baseSprite->width()/2, 80);
 }
 
 void Snake::Snake::enterInitialsSetup()
@@ -699,6 +695,7 @@ void Snake::Snake::enterInitialsSetup()
 		}
 	});
 	buttons->setBtnPressCallback(BTN_A, [](){
+		Serial.println("next letter");
 		instance->charCursor++;
 		instance->blinkState = 1;
 		instance->elapsedMillis = millis();
@@ -713,15 +710,15 @@ void Snake::Snake::enterInitialsUpdate() {
 	}
 	if(millis()-hiscoreMillis >= 1000)
 	{
-	hiscoreMillis = millis();
-	hiscoreBlink = !hiscoreBlink;
+		hiscoreMillis = millis();
+		hiscoreBlink = !hiscoreBlink;
 	}
 	previous = name;
 
 	if (previous != name)
 	{
-	blinkState = 1;
-	elapsedMillis = millis();
+		blinkState = 1;
+		elapsedMillis = millis();
 	}
 
 	if(charCursor >= 3)
@@ -735,27 +732,28 @@ void Snake::Snake::enterInitialsUpdate() {
 }
 void Snake::Snake::enterInitialsDraw() {
 	baseSprite->clear(TFT_BLACK);
-	baseSprite->setCursor(16, 8);
-	baseSprite->setTextFont(2);
+	baseSprite->setFont(&fonts::Font2);
 	baseSprite->setTextColor(TFT_WHITE);
 	baseSprite->setTextSize(1);
-	baseSprite->printCenter("ENTER NAME");
-	baseSprite->setCursor(20, 80);
-	
-	if(hiscoreBlink && hScore > tempScore)
-	baseSprite->printCenter("NEW HIGH!");
-	else
-	baseSprite->printf("SCORE: %04d", hScore);
+	baseSprite->drawString("ENTER NAME", baseSprite->width()/2, 8);
+	baseSprite->setCursor(39, 80);
 
-	baseSprite->setCursor(40, 40);
+	if(hiscoreBlink && hScore > tempScore){
+		baseSprite->drawString("NEW HIGH!", baseSprite->width() / 2, 80);
+	}
+	else{
+		baseSprite->printf("SCORE: %04d", hScore);
+	}
+
+	baseSprite->setCursor(66, 40);
 	baseSprite->print(name[0]);
-	baseSprite->setCursor(55, 40);
+	baseSprite->setCursor(81, 40);
 	baseSprite->print(name[1]);
-	baseSprite->setCursor(70, 40);
+	baseSprite->setCursor(96, 40);
 	baseSprite->print(name[2]);
-	// baseSprite->drawRect(30, 38, 100, 20, TFT_WHITE);
+	// display->drawRect(30, 38, 100, 20, TFT_WHITE);
 	if(blinkState){
-		baseSprite->drawFastHLine(38 + 15*charCursor, 56, 12, TFT_WHITE);
+		baseSprite->drawFastHLine(63 + 15*charCursor, 54, 12, TFT_WHITE);
 	}
 }
 
@@ -775,20 +773,17 @@ void Snake::Snake::dataDisplaySetup()
 void Snake::Snake::dataDisplay()
 {
 	baseSprite->clear(TFT_BLACK);
-	baseSprite->setCursor(32, -2);
 	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
+	baseSprite->setFont(&fonts::Font2);
 	baseSprite->setTextColor(TFT_YELLOW);
-	baseSprite->printCenter("HIGHSCORES");
+	baseSprite->drawString("HIGHSCORES", baseSprite->width() / 2,-2);
 	baseSprite->setTextColor(TFT_GREEN);
 	baseSprite->setCursor(3, 110);
 	for (int i = 1; i < 6;i++)
 	{
-		baseSprite->setCursor(6, i * 20);
+		baseSprite->setCursor(22, 2 + i * 16);
 		if(i <= Highscore.count())
 		{
-			Serial.printf("%d.   %.3s    %04d\n", i, Highscore.get(i - 1).name, Highscore.get(i - 1).score);
-			Serial.println();
 			baseSprite->printf("%d.   %.3s    %04d", i, Highscore.get(i - 1).name, Highscore.get(i - 1).score);
 		}
 		else
@@ -796,9 +791,7 @@ void Snake::Snake::dataDisplay()
 			baseSprite->printf("%d.    ---   ----", i);
 		}
 	}
-	Serial.println("---------------");
-	baseSprite->setCursor(2, 115);
-	baseSprite->print("Press UP to erase");
+	baseSprite->drawString("Press UP to erase", baseSprite->width() / 2, 105);
 }
 
 void Snake::Snake::eraseDataSetup()
@@ -819,35 +812,32 @@ void Snake::Snake::eraseDataSetup()
 void Snake::Snake::eraseDataDraw()
 {
 	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextFont(2);
+	baseSprite->setFont(&fonts::Font2);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->setCursor(4, 5);
-	baseSprite->printCenter("ARE YOU SURE?");
-	baseSprite->setCursor(4, 25);
-	baseSprite->printCenter("This cannot");
-	baseSprite->setCursor(4, 41);
-	baseSprite->printCenter("be reverted!");
+	baseSprite->setTextDatum(textdatum_t::bottom_center);
+	baseSprite->drawString("ARE YOU SURE?", baseSprite->width() / 2, 17);
+	baseSprite->drawString("This cannot be reverted!", baseSprite->width() / 2, 37);
+	//	baseSprite->drawString("", screen.getWidth() / 2, 53);
 
-	baseSprite->setCursor(10, 102);
-	baseSprite->print("B:");
-	baseSprite->setCursor(48, 102);
-	baseSprite->print("Cancel");
+	baseSprite->drawString("B: Cancel", baseSprite->width() / 2, 105);
 
-	baseSprite->setCursor(10, 81);
+	baseSprite->setCursor(35, 81);
 	baseSprite->print("A:");
 
 	if (blinkState){
-		baseSprite->drawRect((baseSprite->width() - 60)/2 + 5, 80, 30*2, 9*2, TFT_RED);
+		baseSprite->drawRect(55, 64, 30*2, 9*2, TFT_RED);
+		baseSprite->drawRect(55, 64, 30*2, 9*2, TFT_RED);
 		baseSprite->setTextColor(TFT_RED);
-		baseSprite->setCursor(46, 81);
+		baseSprite->setCursor(62, 81);
 		baseSprite->print("DELETE");
 	}
 	else {
-		baseSprite->fillRect((baseSprite->width() - 60)/2 + 5, 80, 30*2, 9*2, TFT_RED);
+		baseSprite->fillRect(55, 64, 30*2, 9*2, TFT_RED);
 		baseSprite->setTextColor(TFT_WHITE);
-		baseSprite->setCursor(46, 81);
+		baseSprite->setCursor(62, 81);
 		baseSprite->print("DELETE");
 	}
+	baseSprite->setTextDatum(textdatum_t::top_center);
 }
 void Snake::Snake::eraseDataUpdate()
 {
