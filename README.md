@@ -2,10 +2,10 @@
 
 A simple Snake game ported from the [CircuitMess Ringo version](https://github.com/CircuitMess/Snake).
 
-![screenshot1](https://raw.githubusercontent.com/CircuitMess/Snake-ByteBoi/master/Screenshots/screenshot_01.bmp)
-![screenshot2](https://raw.githubusercontent.com/CircuitMess/Snake-ByteBoi/master/Screenshots/screenshot_02.bmp)
-![screenshot1](https://raw.githubusercontent.com/CircuitMess/Snake-ByteBoi/master/Screenshots/screenshot_03.bmp)
-![screenshot2](https://raw.githubusercontent.com/CircuitMess/Snake-ByteBoi/master/Screenshots/screenshot_04.bmp)
+![screenshot1](https://github.com/CircuitMess/Snake-ByteBoi/raw/master/Screenshots/screenshot_01.bmp)
+![screenshot2](https://github.com/CircuitMess/Snake-ByteBoi/raw/master/Screenshots/screenshot_02.bmp)
+![screenshot1](https://github.com/CircuitMess/Snake-ByteBoi/raw/master/Screenshots/screenshot_03.bmp)
+![screenshot2](https://github.com/CircuitMess/Snake-ByteBoi/raw/master/Screenshots/screenshot_04.bmp)
 
 
 ## Meta
