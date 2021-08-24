@@ -14,14 +14,14 @@
 #define BTN_DOWN 3
 #define BTN_LEFT 1
 #define BTN_RIGHT 2
-#define BTN_A 13
-#define BTN_B 14
-#define BTN_C 15
+#define BTN_A 6
+#define BTN_B 5
+#define BTN_C 4
 
 #define BUZZ_PIN 12
-#define BL_PIN 21
+#define BL_PIN 12
 
-#define LED_G 8
-#define LED_B 9
-#define LED_R 10
+#define LED_G 13
+#define LED_B 15
+#define LED_R 14
 #endif //NIBBLE_PINS_HPP
