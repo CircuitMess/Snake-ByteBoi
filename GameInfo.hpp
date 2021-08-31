@@ -1,6 +1,6 @@
 #ifndef GAME_INFO
 #define GAME_INFO
-​ class Context;
+class Context;
 struct GameInfo
 {
 	const char *title;
@@ -12,12 +12,13 @@ struct GameInfo
 
 #include <Arduino.h>
 #include <Display/Display.h>
+#include <SPIFFS.h>
 #include "src/snake_icon.hpp"
 #include "src/Snake.h"
 const GameInfo SnakeInfo
 {
 	"Snake",
 		"Snake around and collect food to become bigger!",
-		snake_icon,
+	[]() -> fs::File { return SPIFFS.open("/snake.raw"); },
 		[](Display &display) -> Context * { return new Snake::Snake(display); }
 };
