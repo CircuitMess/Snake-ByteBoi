@@ -1,9 +1,10 @@
 #include "Snake.h"
 #include <Audio/Piezo.h>
 #include "Highscore.h"
+#include <ByteBoi.h>
 
 Snake::Snake *Snake::Snake::instance = nullptr;
-Snake::Snake::Snake(Display &display) : Context(display), baseSprite(screen.getSprite()),
+Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.getSprite()),
 										buttons(Input::getInstance())
 {
 	instance = this;
@@ -16,7 +17,7 @@ Snake::Snake::Snake(Display &display) : Context(display), baseSprite(screen.getS
 }
 void Snake::Snake::start()
 {
-	runningContext = this;
+	//runningContext = this;
 	Highscore.begin();
 	prevGamestatus = "";
 	draw();
@@ -28,7 +29,7 @@ void Snake::Snake::stop()
 	LoopManager::removeListener(this);
 }
 void Snake::Snake::pack(){
-	exitingGame = true;
+	//exitingGame = true;
 }
 void Snake::Snake::draw()
 {
