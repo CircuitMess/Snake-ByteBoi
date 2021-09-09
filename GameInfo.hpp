@@ -19,6 +19,6 @@ const GameInfo SnakeInfo
 {
 	"Snake",
 		"Snake around and collect food to become bigger!",
-	[]() -> fs::File { return SPIFFS.open("/snake.raw"); },
+	[]() -> fs::File { return SPIFFS.open("/MainMenu/snake.raw"); },
 		[](Display &display) -> Context * { return new Snake::Snake(display); }
 };
