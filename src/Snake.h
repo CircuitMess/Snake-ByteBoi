@@ -5,11 +5,9 @@
 #include <Input/I2cExpander.h>
 #include <Input/InputI2C.h>
 #include <Loop/LoopManager.h>
-#include <ArduinoJson.h>
 
 
 #include <Support/Context.h>
-#include "../Nibble.hpp"
 #include <UI/Image.h>
 
 constexpr int BACKGROUND_COLOR = 0x0000; // Background color in hex. 0x0000 is black.
@@ -18,15 +16,15 @@ constexpr int SNAKE_SPEED_MAX = 2;       // Maximum movement in pixels per updat
 constexpr int EYE_COLOR = 0x0000;
 constexpr int maxSnakeLength = 500;
 
-extern Context* runningContext;
-extern bool exitingGame;
+//extern Context* runningContext;
+//extern bool exitingGame;
 
 namespace Snake
 {
     class Snake : public Context, public LoopListener
     {
     public:
-        Snake(Display &display);
+        Snake(Display *display);
         void draw() override;
         void start() override;
         void loop(uint) override;
