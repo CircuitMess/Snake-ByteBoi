@@ -17,7 +17,6 @@ Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.get
 }
 void Snake::Snake::start()
 {
-	//runningContext = this;
 	Highscore.begin();
 	prevGamestatus = "";
 	draw();
@@ -29,7 +28,7 @@ void Snake::Snake::stop()
 	LoopManager::removeListener(this);
 }
 void Snake::Snake::pack(){
-	//exitingGame = true;
+
 }
 void Snake::Snake::draw()
 {

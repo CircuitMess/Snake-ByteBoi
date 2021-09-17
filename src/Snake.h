@@ -16,9 +16,6 @@ constexpr int SNAKE_SPEED_MAX = 2;       // Maximum movement in pixels per updat
 constexpr int EYE_COLOR = 0x0000;
 constexpr int maxSnakeLength = 500;
 
-//extern Context* runningContext;
-//extern bool exitingGame;
-
 namespace Snake
 {
     class Snake : public Context, public LoopListener
