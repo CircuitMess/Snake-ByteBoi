@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(Snake-ByteBoi) # Project name - has to be same as directory name
 set(PORT COM3) # Upload port
-set(DEVICE cm:esp32:wheelson) # Arduino device FQBN
+set(DEVICE cm:esp32:byteboi) # Arduino device FQBN
 set(CMAKE_CXX_STANDARD 11)
 
 set(ROOT ${CMAKE_SOURCE_DIR})
