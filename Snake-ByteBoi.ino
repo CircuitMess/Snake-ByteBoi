@@ -16,7 +16,6 @@ void setup()
 	ByteBoi.begin();
 	ByteBoi.getDisplay()->commit();
 	Piezo.begin(25);
-	LoopManager::addListener(Input::getInstance());
 	game=new Snake::Snake(ByteBoi.getDisplay());
 	LoopManager::addListener(game);
 	game->unpack();
