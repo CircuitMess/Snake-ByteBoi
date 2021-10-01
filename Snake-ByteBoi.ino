@@ -14,16 +14,13 @@ void setup()
 {
 	Serial.begin(115200);
 	ByteBoi.begin();
-	ByteBoi.getDisplay()->commit();
-	Piezo.begin(25);
 	game=new Snake::Snake(ByteBoi.getDisplay());
-	LoopManager::addListener(game);
 	game->unpack();
+	ByteBoi.splash();
 	game->start();
 }
 
 void loop()
 {
 	LoopManager::loop();
-    yield();
 }
