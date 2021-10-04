@@ -14,6 +14,8 @@ void setup()
 {
 	Serial.begin(115200);
 	ByteBoi.begin();
+	ByteBoi.bindMenu();
+	ByteBoi.setGameID("Snake");
 	game=new Snake::Snake(ByteBoi.getDisplay());
 	game->unpack();
 	ByteBoi.splash();
