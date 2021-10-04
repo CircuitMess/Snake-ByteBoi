@@ -2,6 +2,7 @@
 
 #include <FS.h>
 #include <SPIFFS.h>
+#include <ByteBoi.h>
 
 Snake::HighscoreImpl Snake::Highscore;
 
@@ -63,13 +64,13 @@ uint8_t Snake::HighscoreImpl::count(){
 }
 
 void Snake::HighscoreImpl::save(){
-	File file = SPIFFS.open(HS_FILENAME, "w");
+	File file = ByteBoi.openData(HS_FILENAME, "w");
 	file.write((byte*) &data, sizeof(Data));
 	file.close();
 }
 
 void Snake::HighscoreImpl::load(){
-	File file = SPIFFS.open(HS_FILENAME, "r");
+	File file = ByteBoi.openData(HS_FILENAME, "r");
 	file.readBytes((char*) &data , sizeof(Data));
 	file.close();
 }
