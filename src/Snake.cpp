@@ -182,7 +182,7 @@ void Snake::Snake::titleSetup()
 			instance->gamestatus = "dataDisplay";
 			break;
 		case 3:
-			instance->pop();
+			ByteBoi.backToLauncher();
 			break;
 		}
 		Piezo.tone(200, 100);
