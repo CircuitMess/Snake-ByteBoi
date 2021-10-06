@@ -15,6 +15,7 @@ void setup()
 	Serial.begin(115200);
 	ByteBoi.begin();
 	ByteBoi.bindMenu();
+	BatteryPopup.enablePopups(true);
 	ByteBoi.setGameID("Snake");
 	game=new Snake::Snake(ByteBoi.getDisplay());
 	game->unpack();
