@@ -42,10 +42,10 @@ namespace Snake
         bool borderFlag = 1;
         int8_t dirX;
         int8_t dirY;
-        uint8_t xos;
-        uint8_t yos;
-        uint8_t snakeX[maxSnakeLength];
-        uint8_t snakeY[maxSnakeLength];
+        uint16_t xos;
+        uint16_t yos;
+        int16_t snakeX[maxSnakeLength];
+        int16_t snakeY[maxSnakeLength];
         uint8_t foodX;
         uint8_t foodY;
         bool foodCoolFlag;
