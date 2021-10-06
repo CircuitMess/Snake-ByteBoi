@@ -5,7 +5,7 @@
 
 #define HS_NAME_LIMIT 3 // player name character limit
 #define HS_MAX_SCORES 5 // # of players in HS
-#define HS_FILENAME "/Snake" // SPIFFS filename for the HS, max 31 char
+#define HS_FILENAME "/HS" // SPIFFS filename for the HS, max 31 char
 
 namespace Snake
 {
