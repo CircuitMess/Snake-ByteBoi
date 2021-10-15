@@ -9,6 +9,7 @@
 
 #include <Support/Context.h>
 #include <UI/Image.h>
+#include <ByteBoiLED.h>
 
 constexpr int BACKGROUND_COLOR = 0x0000; // Background color in hex. 0x0000 is black.
 constexpr int SNAKE_SPEED_MIN = 1;       // Minimum movement in pixels per update. (value is inclusive)
@@ -60,7 +61,7 @@ namespace Snake
         uint8_t snakeColorVal;
         bool bigger;
 		uint deadTime = 0;
-
+		ByteBoiLED rgbLED;
 		uint tempScore = 0;
 		String name = "";
 		String previous = "";
