@@ -500,14 +500,14 @@ void Snake::Snake::foodCheck()
 
 	if (eaten)
 	{
-		rgbLED.setRGB(static_cast<LEDColor>(LEDColor::YELLOW));
+		LED.setRGB(static_cast<LEDColor>(LEDColor::YELLOW));
 		snakeLength += 6;
 		hScore += (1 * speed);
 		Piezo.tone(200, 100);
 		bigger = true;
 	}
 	else{
-		rgbLED.setRGB(OFF);
+		LED.setRGB(OFF);
 	}
 }
 void Snake::Snake::crash()

@@ -61,7 +61,6 @@ namespace Snake
         uint8_t snakeColorVal;
         bool bigger;
 		uint deadTime = 0;
-		ByteBoiLED rgbLED;
 		uint tempScore = 0;
 		String name = "";
 		String previous = "";
