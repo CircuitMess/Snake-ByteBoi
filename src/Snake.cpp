@@ -348,30 +348,30 @@ void Snake::Snake::snakeMenu()
 {
 	memset(snakeX, 0, sizeof(snakeX));
 	memset(snakeY, 0, sizeof(snakeY));
-	dirX = 1; dirY = 0;
+	dirX = 1.3; dirY = 0;
 	snakeLength = 30;
 }
 void Snake::Snake::snakeMenuControl()
 {
 	if (snakeX[0] < baseSprite->width() - 7 && snakeY[0] <= 1)
 	{
-		dirX = 1 * speed;
+		dirX = 1.3 * speed;
 		dirY = 0;
 	}
 	else if (snakeX[0] >= baseSprite->width() - 7 && snakeY[0] < baseSprite->height() - 7)
 	{
 		dirX = 0;
-		dirY = 1 * speed;
+		dirY = 1.3 * speed;
 	}
 	else if (snakeX[0] > 3 && snakeY[0] >= baseSprite->height() - 7)
 	{
-		dirX = -1 * speed;
+		dirX = -1.3 * speed;
 		dirY = 0;
 	}
 	else if (snakeX[0] <= 1 && snakeY[0] > 3)
 	{
 		dirX = 0;
-		dirY = -1 * speed;
+		dirY = -1.3 * speed;
 	}
 }
 void Snake::Snake::newGameSetup()
@@ -389,7 +389,7 @@ void Snake::Snake::newGameSetup()
 	foodX = random(3, baseSprite->width() - 6);
 	foodY = random(3, baseSprite->height() - 6);
 
-	dirX = 1 * speed;
+	dirX = 1.3 * speed;
 	dirY = 0;
 	snakeLength = 12;
 	hScore = 0;
@@ -455,27 +455,27 @@ void Snake::Snake::setButtonCallbacksGame()
 		if (instance->dirY == 0)
 		{
 			instance->dirX = 0;
-			instance->dirY = -1 * instance->speed;
+			instance->dirY = -1.3 * instance->speed;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_DOWN, []() {
 		if (instance->dirY == 0)
 		{
 			instance->dirX = 0;
-			instance->dirY = 1 * instance->speed;
+			instance->dirY = 1.3 * instance->speed;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_RIGHT, []() {
 		if (instance->dirX == 0)
 		{
-			instance->dirX = 1 * instance->speed;
+			instance->dirX = 1.3 * instance->speed;
 			instance->dirY = 0;
 		}
 	});
 	buttons->setBtnPressCallback(BTN_LEFT, []() {
 		if (instance->dirX == 0)
 		{
-			instance->dirX = -1 * instance->speed;
+			instance->dirX = -1.3 * instance->speed;
 			instance->dirY = 0;
 		}
 	});
