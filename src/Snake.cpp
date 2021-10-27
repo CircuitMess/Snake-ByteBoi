@@ -168,6 +168,7 @@ void Snake::Snake::titleSetup()
 	});
 
 	buttons->setBtnPressCallback(BTN_A, []() {
+		if(instance->gamestatus != "title") return ;
 		switch (instance->menuSignal)
 		{
 		case 0:
