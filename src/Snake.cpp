@@ -2,6 +2,9 @@
 #include <Audio/Piezo.h>
 #include "Highscore.h"
 #include <ByteBoi.h>
+#include <SD.h>
+#include <SPI.h>
+#include <Playback/PlaybackSystem.h>
 
 Snake::Snake *Snake::Snake::instance = nullptr;
 Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.getSprite()),
@@ -13,7 +16,14 @@ Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.get
 	memset(snakeX, 0, sizeof(snakeX));
 	memset(snakeY, 0, sizeof(snakeY));
 	snakeLength = 0;
-	
+
+	SD.begin(SD_CS, SPI);
+
+	Samples.game = new Sample(SD.open(ByteBoi.getSDPath() + "/Music/Game.aac"));
+	Samples.game->setLooping(true);
+
+	Samples.menu = new Sample(SD.open(ByteBoi.getSDPath() + "/Music/Menu.aac"));
+	Samples.menu->setLooping(true);
 }
 void Snake::Snake::start()
 {
@@ -21,9 +31,15 @@ void Snake::Snake::start()
 	prevGamestatus = "";
 	draw();
 	LoopManager::addListener(this);
+
+	if(instance->gamestatus == "oldgame"){
+		Playback.open(instance->Samples.game);
+		Playback.start();
+	}
 }
 void Snake::Snake::stop()
 {
+	Playback.stop();
 	clearButtonCallbacks();
 	LoopManager::removeListener(this);
 }
@@ -172,13 +188,14 @@ void Snake::Snake::titleSetup()
 		switch (instance->menuSignal)
 		{
 		case 0:
-			instance->gamestatus = "newgame";
-			instance->screenChange = true;
-			break;
 		case 1:
+			if(instance->gamestatus == "title" || instance->gamestatus == "enterInitials"){
+				Playback.play(instance->Samples.game);
+			}
+
 			instance->gamestatus = "newgame";
 			instance->screenChange = true;
-			break;
+			return;
 		case 2:
 			instance->gamestatus = "dataDisplay";
 			break;
@@ -188,6 +205,8 @@ void Snake::Snake::titleSetup()
 		}
 		Piezo.tone(200, 100);
 	});
+
+	Playback.play(instance->Samples.menu);
 }
 void Snake::Snake::drawHead()
 {
@@ -638,6 +657,7 @@ void Snake::Snake::paused()
 
 void Snake::Snake::enterInitialsSetup()
 {
+	Playback.stop();
 	tempScore = Highscore.get(0).score;
 	name = "AAA";
 	charCursor = 0;

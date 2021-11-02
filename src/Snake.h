@@ -10,6 +10,7 @@
 #include <Support/Context.h>
 #include <UI/Image.h>
 #include <ByteBoiLED.h>
+#include <Playback/Sample.h>
 
 constexpr int BACKGROUND_COLOR = 0x0000; // Background color in hex. 0x0000 is black.
 constexpr int SNAKE_SPEED_MIN = 1;       // Minimum movement in pixels per update. (value is inclusive)
@@ -70,6 +71,11 @@ namespace Snake
 		bool hiscoreBlink = 0;
 		uint32_t blinkMillis = millis();
 		bool blinkState = 0;
+
+		struct {
+			Sample* game = nullptr;
+			Sample* menu = nullptr;
+		} Samples;
 
 
         void titleSetup();
