@@ -1,5 +1,4 @@
 #include "Snake.h"
-#include <Audio/Piezo.h>
 #include "Highscore.h"
 #include <ByteBoi.h>
 #include <SD.h>
@@ -139,7 +138,7 @@ void Snake::Snake::titleSetup()
 		{
 			instance->menuSignal = 3;
 		}
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 
 	buttons->setBtnPressCallback(BTN_DOWN, []() {
@@ -151,7 +150,7 @@ void Snake::Snake::titleSetup()
 		{
 			instance->menuSignal = 0;
 		}
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 
 	buttons->setBtnPressCallback(BTN_RIGHT, []() {
@@ -166,7 +165,7 @@ void Snake::Snake::titleSetup()
 			else
 				instance->speed = 1;
 		}
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 	buttons->setBtnPressCallback(BTN_LEFT, []() {
 		if (instance->menuSignal == 0)
@@ -180,7 +179,7 @@ void Snake::Snake::titleSetup()
 			else
 				instance->speed = 3;
 		}
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 
 	buttons->setBtnPressCallback(BTN_A, []() {
@@ -203,7 +202,7 @@ void Snake::Snake::titleSetup()
 			ByteBoi.backToLauncher();
 			break;
 		}
-		Piezo.tone(200, 100);
+		Playback.tone(600, 100);
 	});
 
 	Playback.play(instance->Samples.menu);
@@ -502,7 +501,7 @@ void Snake::Snake::setButtonCallbacksGame()
 	buttons->setBtnPressCallback(BTN_B, []() {
 		Serial.println("paused");
 		instance->gamestatus = "paused";
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 }
 void Snake::Snake::foodCheck()
@@ -523,7 +522,7 @@ void Snake::Snake::foodCheck()
 		LED.setRGB(static_cast<LEDColor>(LEDColor::YELLOW));
 		snakeLength += 6;
 		hScore += (1 * speed);
-		Piezo.tone(200, 100);
+		Playback.tone(600, 100);
 		bigger = true;
 	}
 	else{
@@ -542,7 +541,7 @@ void Snake::Snake::crash()
 			buttons->removeBtnPressCallback(BTN_DOWN);
 			buttons->removeBtnPressCallback(BTN_LEFT);
 			buttons->removeBtnPressCallback(BTN_RIGHT);
-			Piezo.tone(50, 300);
+			Playback.tone(200, 300);
 		}
 	}
 	else
@@ -569,7 +568,7 @@ void Snake::Snake::crash()
 		if (((snakeX[0] == snakeX[i + 10] || snakeX[0] == snakeX[i + 10] + 4) && (snakeY[0] == snakeY[i + 10] || snakeY[0] == snakeY[i + 10] + 4))
 		|| ((snakeX[0] + 4 == snakeX[i + 10] || snakeX[0] + 4 == snakeX[i + 10] + 4) && (snakeY[0] + 4 == snakeY[i + 10] || snakeY[0] + 4 == snakeY[i + 10] + 4))){
 			gamestatus = "dead";
-			Piezo.tone(50, 300);
+			Playback.tone(200, 300);
 		}
 	}
 }
@@ -625,12 +624,12 @@ void Snake::Snake::pausedSetup()
 	buttons->setBtnPressCallback(BTN_B, []() {
 		Serial.println("title");
 		instance->gamestatus = "title";
-		Piezo.tone(100, 100);
+		Playback.tone(400, 100);
 	});
 	buttons->setBtnPressCallback(BTN_A, []() {
 		Serial.println("oldgame");
 		instance->gamestatus = "oldgame";
-		Piezo.tone(200, 100);
+		Playback.tone(600, 100);
 	});
 }
 void Snake::Snake::paused()
