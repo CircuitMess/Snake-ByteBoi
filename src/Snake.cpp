@@ -411,7 +411,7 @@ void Snake::Snake::newGameSetup()
 	dirX = 1.3 * speed;
 	dirY = 0;
 	snakeLength = 12;
-	hScore = 0;
+	hScore = 90;
 	gamestatus = "oldgame";
 }
 void Snake::Snake::drawFood()

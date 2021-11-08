@@ -7,13 +7,14 @@
 #include <ByteBoi.h>
 //#include "Nibble.hpp"
 #include <Audio/Piezo.h>
-
+#include <SleepService.h>
 Snake::Snake* game;
 
 void setup()
 {
 	Serial.begin(115200);
 	ByteBoi.begin();
+	Sleep.begin();
 	ByteBoi.bindMenu();
 	BatteryPopup.enablePopups(true);
 	ByteBoi.setGameID("Snake");
