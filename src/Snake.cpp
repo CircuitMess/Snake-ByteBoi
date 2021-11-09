@@ -324,6 +324,13 @@ void Snake::Snake::loop(uint _time)
 		enterInitialsUpdate();
 	}
 	draw();
+
+/*	Sprite* canvas = screen.getSprite();
+	canvas->setTextColor(TFT_WHITE);
+	canvas->setTextSize(1);
+	canvas->setCursor(2, 5);
+	canvas->printf("%.1f fps", (1000000.0 / (float) _time));*/
+
 	screen.commit();
 }
 void Snake::Snake::control()
@@ -411,7 +418,7 @@ void Snake::Snake::newGameSetup()
 	dirX = 1.3 * speed;
 	dirY = 0;
 	snakeLength = 12;
-	hScore = 90;
+	hScore = 0;
 	gamestatus = "oldgame";
 }
 void Snake::Snake::drawFood()
