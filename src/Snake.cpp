@@ -199,6 +199,7 @@ void Snake::Snake::titleSetup()
 			instance->gamestatus = "dataDisplay";
 			break;
 		case 3:
+			Playback.stop();
 			ByteBoi.backToLauncher();
 			break;
 		}
