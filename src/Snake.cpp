@@ -16,8 +16,6 @@ Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.get
 	memset(snakeY, 0, sizeof(snakeY));
 	snakeLength = 0;
 
-	SD.begin(SD_CS, SPI);
-
 	Samples.game = new Sample(SD.open(ByteBoi.getSDPath() + "/Music/Game.aac"));
 	Samples.game->setLooping(true);
 
