@@ -1,7 +1,6 @@
 #include "Snake.h"
 #include "Highscore.h"
 #include <ByteBoi.h>
-#include <SD.h>
 #include <SPI.h>
 #include <Playback/PlaybackSystem.h>
 
@@ -16,10 +15,10 @@ Snake::Snake::Snake(Display *display) : Context(*display), baseSprite(screen.get
 	memset(snakeY, 0, sizeof(snakeY));
 	snakeLength = 0;
 
-	Samples.game = new Sample(SD.open(ByteBoi.getSDPath() + "/Music/Game.aac"));
+	Samples.game = new Sample(ByteBoi.SD_open(ByteBoi.getSDPath() + "/Music/Game.aac"));
 	Samples.game->setLooping(true);
 
-	Samples.menu = new Sample(SD.open(ByteBoi.getSDPath() + "/Music/Menu.aac"));
+	Samples.menu = new Sample(ByteBoi.SD_open(ByteBoi.getSDPath() + "/Music/Menu.aac"));
 	Samples.menu->setLooping(true);
 }
 void Snake::Snake::start()
